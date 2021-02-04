@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+
+const Liftoff = require('liftoff');
+const argv = require('minimist')(process.argv.slice(2));
+const commander = require('commander');
+require('../lib/index.js');
+const version = require('../package.json').version;
+const {exec} = require('child_process');
+const cli = new Liftoff({
+    name: 'tinyimg',
+    processTitle: 'tinyimg',
+    moduleName: 'tinyimg',
+    extensions: {
+        '.js': null
+    }
+});
+
+class App {
+    register(commander, argv, env) {
+        commander.version(version);
+
+        if (argv._.length === 0) {
+            exec('tinyimg --help', function (err, info) {
+                console.log(info);
+            });
+        }
+        const program = commander
+            .description('automatic download images from tinypng.com')
+            .option('-p, --path <value>', 'tinypimg image path', '')
+            .option('-c, --count <value>', 'compress frequency', '')
+            .option('-d, --deep', 'deeploop director', '');
+        // action
+        program.action(() => {
+            require('../command/tinyimg')(argv, env, program);
+        });
+        commander.parse(process.argv);
+    }
+};
+
+cli.launch({
+    cwd: argv.r || argv.root
+}, function (env) {
+    const appInstance = new App();
+    appInstance.register(commander, argv, env);
+});
