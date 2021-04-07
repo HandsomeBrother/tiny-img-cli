@@ -1,6 +1,6 @@
 {
   "name": "tinypng-com-cli",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "指令化在tinypng上传下载图片,设置压缩次数",
   "bin": {
     "tinyimg": "bin/tinyimg"

@@ -27,8 +27,9 @@ class App {
         const program = commander
             .description('automatic download images from tinypng.com')
             .option('-p, --path <value>', 'tinypimg image path', '')
-            .option('-c, --count <value>', 'compress frequency', '')
+            .option('-c, --count <value>', 'compress frequency', 1)
             .option('-d, --deep', 'deeploop director', '');
+
         // action
         program.action(() => {
             require('../command/tinyimg')(argv, env, program);
@@ -36,7 +37,6 @@ class App {
         commander.parse(process.argv);
     }
 };
-
 cli.launch({
     cwd: argv.r || argv.root
 }, function (env) {
