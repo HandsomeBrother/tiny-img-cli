@@ -6,7 +6,8 @@ const conf = {
     exts: ['.jpg', '.png'],
     max: 5000000,
     files: {},
-    isDeep: false
+    isDeep: false,
+    compressCount: 1
 };
 class TinyImg {
 
@@ -152,9 +153,10 @@ class TinyImg {
 }
 
 module.exports = function (argv, env, program) {
-    const compressCount = argv._[1] || program.count;
-    const imgEntryPath = argv._[0] || program.path;
-    const isDeep = program.deep || program.d;
+    const args = program.opts();
+    const imgEntryPath = args.path || argv._[0];
+    const compressCount = args.count || argv._[1];
+    const isDeep = args.deep;
     const tinyImg = new TinyImg(imgEntryPath, compressCount, isDeep);
     tinyImg.compress();
 };
